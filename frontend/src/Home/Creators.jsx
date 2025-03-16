@@ -1,0 +1,56 @@
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+
+function Creator() {
+  const [admin, setAdmin] = useState([]);
+  console.log(admin);
+  useEffect(() => {
+    const fetchAdmins = async () => {
+      const response = await axios.get(
+        "http://localhost:4001/api/users/admins",
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("hir",response.data.admins);
+      setAdmin(response.data.admins);
+    };
+    fetchAdmins();
+  }, []);
+  return (
+    <div className=" container mx-auto p-4">
+      <h1 className="text-2xl font-semibold mb-6">Popular Creators</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 rounded-full my-5">
+        {admin && admin.length > 0 ? (
+          admin.slice(0, 4).map((element) => {
+            return (
+              <div key={element._id}>
+                <div className="">
+                <img
+  src={element.photo}
+  alt="no creator"
+  className="w-[300px] h-[300px] object-cover rounded-full 
+  border-4 border-transparent  p-1 bg-amber-100
+  shadow-lg hover:scale-110 hover:animate-pulse transition-transform duration-300"
+/>
+
+
+
+
+                  <div className="text-center md:ml-[-130px]">
+                    <p>{element.name}</p>
+                    <p className="text-gray-600 text-xs">{element.role}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <div></div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default Creator;
